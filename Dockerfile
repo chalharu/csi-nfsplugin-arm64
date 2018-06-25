@@ -25,12 +25,12 @@ RUN cd / && \
     wget https://github.com/multiarch/qemu-user-static/releases/download/v2.12.0/x86_64_qemu-aarch64-static.tar.gz && \
     tar zxvf x86_64_qemu-aarch64-static.tar.gz
 
-FROM arm64v8/centos:7
+FROM arm64v8/alpine:3.7
 
 COPY --from=build-env /root/go/src/github.com/kubernetes-csi/drivers/_output/nfsplugin /nfsplugin
 COPY --from=build-env /qemu-aarch64-static /qemu-aarch64-static
-COPY yuminstall.sh /yuminstall.sh
+COPY apkinstall.sh /apkinstall.sh
 
-RUN [ "/qemu-aarch64-static", "/bin/sh", "/yuminstall.sh"]
+RUN [ "/qemu-aarch64-static", "/bin/sh", "/apkinstall.sh"]
 
 ENTRYPOINT ["/nfsplugin"]
