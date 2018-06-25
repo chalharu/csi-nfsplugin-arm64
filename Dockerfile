@@ -20,11 +20,15 @@ RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
 RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
     mkdir -p _output && \
     CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o _output/nfsplugin ./app/nfsplugin
+RUN cd / && \
+    wget https://github.com/multiarch/qemu-user-static/releases/download/v2.12.0/x86_64_qemu-aarch64-static.tar.gz && \
+    tar zxvf x86_64_qemu-aarch64-static.tar.gz
 
 FROM arm64v8/centos:7
 
 COPY --from=build-env /root/go/src/github.com/kubernetes-csi/drivers/_output/nfsplugin /nfsplugin
+COPY --from=build-env /x86_64_qemu-aarch64-static /x86_64_qemu-aarch64-static
 
-RUN yum -y install nfs-utils && yum -y install epel-release && yum -y install jq && yum clean all
+RUN [ "/x86_64_qemu-aarch64-static", "/bin/sh", "-c", "yum -y install nfs-utils && yum -y install epel-release && yum -y install jq && yum clean all"]
 
 ENTRYPOINT ["/nfsplugin"]
