@@ -7,7 +7,7 @@ RUN apt-add-repository multiverse
 RUN apt-get -yq update
 RUN apt-get -yq install gcc-aarch64-linux-gnu git make gcc bc device-tree-compiler u-boot-tools \
   ncurses-dev qemu-user-static wget cpio kmod squashfs-tools bison flex libssl-dev patch \
-  xz-utils b43-fwcutter bzip2 ccache gawk golang
+  xz-utils b43-fwcutter bzip2 ccache gawk golang curl
 RUN apt-get -yq clean
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
