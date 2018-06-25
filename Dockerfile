@@ -30,6 +30,6 @@ FROM arm64v8/centos:7
 COPY --from=build-env /root/go/src/github.com/kubernetes-csi/drivers/_output/nfsplugin /nfsplugin
 COPY --from=build-env /qemu-aarch64-static /qemu-aarch64-static
 
-RUN [ "/qemu-aarch64-static", "/bin/sh", "-c", "yum -y install nfs-utils && yum -y install epel-release && yum -y install jq && yum clean all"]
+RUN [ "/qemu-aarch64-static", "/bin/sh", "-c", "/qemu-aarch64-static yum -y install nfs-utils && /qemu-aarch64-static yum -y install epel-release && /qemu-aarch64-static yum -y install jq && /qemu-aarch64-static yum clean all"]
 
 ENTRYPOINT ["/nfsplugin"]
