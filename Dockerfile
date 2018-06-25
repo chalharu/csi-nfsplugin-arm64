@@ -14,6 +14,8 @@ RUN apt-get -yq install gcc-aarch64-linux-gnu git make gcc bc device-tree-compil
 RUN apt-get -yq clean
 RUN go get -d github.com/kubernetes-csi/drivers || true
 RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
+    dep ensure -vendor-only
+RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
     mkdir -p _output && \
     CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o _output/nfsplugin ./app/nfsplugin
 
