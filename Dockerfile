@@ -28,9 +28,8 @@ RUN cd / && \
 FROM arm64v8/alpine:3.7
 
 COPY --from=build-env /root/go/src/github.com/kubernetes-csi/drivers/_output/nfsplugin /nfsplugin
-COPY --from=build-env /qemu-aarch64-static /qemu-aarch64-static
-COPY apkinstall.sh /apkinstall.sh
+COPY --from=build-env /qemu-aarch64-static /usr/bin/qemu-aarch64-static
 
-RUN [ "/qemu-aarch64-static", "/bin/sh", "/apkinstall.sh"]
+RUN apk --no-cache add nfs-utils jq
 
 ENTRYPOINT ["/nfsplugin"]
