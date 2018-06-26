@@ -17,7 +17,6 @@ script:
 after_success:
 - |
   if [ "${TRAVIS_OS_NAME}" = "linux" ] &&
-     [ "${TRAVIS_RUST_VERSION}" = "stable" ] &&
      [ "${TRAVIS_BRANCH}" = "master" ] &&
      [ "${TRAVIS_PULL_REQUEST}" = "false" ] &&
      [ "${TRAVIS_EVENT_TYPE}" = "push" ]; then
