@@ -1,9 +1,6 @@
 language: generic
 sudo: true
 
-services:
-- docker
-
 os:
 - linux
 
@@ -11,9 +8,9 @@ before_script:
 - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 - sudo apt-get -yq update
-- sudo apt-get -yq upgrade
 - sudo apt-get -yq install qemu-user-static binfmt-support docker-ce
 - sudo docker login docker login -u mitsu1986 -p ${DOCKERHUB_PASS}
+- sudo service docker start
 
 script:
 - sudo docker build -t mitsu1986/csi-nfsplugin-arm64 .
