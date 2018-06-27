@@ -18,9 +18,10 @@ ENV GOOS=linux
 RUN go get -d github.com/wongma7/drivers || true
 RUN cd /root/go/src/github.com/wongma7/drivers && \
     git checkout -b csi0.3 origin/csi0.3
-RUN cd /root/go/src/github.com/wongma7/drivers && \
+RUN mv /root/go/src/github.com/wongma7 /root/go/src/github.com/kubernetes-csi
+RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
     /root/go/bin/dep ensure -vendor-only
-RUN cd /root/go/src/github.com/wongma7/drivers && \
+RUN cd /root/go/src/github.com/kubernetes-csi/drivers && \
     mkdir -p _output && \
     CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o _output/nfsplugin ./app/nfsplugin
 RUN cd / && \
@@ -29,7 +30,7 @@ RUN cd / && \
 
 FROM arm64v8/alpine:3.7
 
-COPY --from=build-env /root/go/src/github.com/wongma7/drivers/_output/nfsplugin /nfsplugin
+COPY --from=build-env /root/go/src/github.com/kubernetes-csi/drivers/_output/nfsplugin /nfsplugin
 COPY --from=build-env /qemu-aarch64-static /usr/bin/qemu-aarch64-static
 
 RUN apk --no-cache add nfs-utils jq
